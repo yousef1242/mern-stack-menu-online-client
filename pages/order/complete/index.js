@@ -7,7 +7,7 @@ import Image from "next/image";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 
-const socket = io("http://localhost:8080");
+const socket = io("https://menuonline.onrender.com");
 
 const OrderCompletePage = () => {
   const router = useRouter();
