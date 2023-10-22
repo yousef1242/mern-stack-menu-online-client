@@ -8,7 +8,7 @@ import LoaderAnimation from "../loaderAnimation/LoaderAnimation";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:8080");
+const socket = io("https://menuonline.onrender.com");
 
 const CompleteTakeAwayOrderModel = ({ setShowCompleteTakeAwayOrderModel }) => {
   const [loading, setLoading] = useState(false);
