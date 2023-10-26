@@ -76,48 +76,35 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
     setCartProductsValues(totalCartValues);
   }, [cart]);
 
-  // create order here function
-  const createOrderFormHandler = async (e) => {
+  const createOrderFormHandker = async (e) => {
     e.preventDefault();
     if (!scanResult) {
-      return toast.error("Please scan the QR code");
+      return toast.error("Please scan the qr code");
     }
     if (router.query.restaurantId) {
       setLoading(true);
+      socket.emit("createOrder", {
+        restaurantId: router.query.restaurantId,
+        tableNumber: scanResult,
+        notes: notes,
+        totalPrice: cartProductsValues,
+        productIds: productIds,
+        quantatys: quantatys,
+        sizes: sizes,
+        prices: prices,
+        isPaid : true
+      });
       try {
-        const orderData = {
-          restaurantId: router.query.restaurantId,
-          tableNumber: scanResult,
-          notes: notes,
-          totalPrice: cartProductsValues,
-          productIds: productIds,
-          quantatys: quantatys,
-          sizes: sizes,
-          prices: prices,
-          isPaid: true,
-        };
-
-        // Emit the 'createOrder' event and wait for the 'orderCreated' event
-        const data = await new Promise((resolve, reject) => {
-          socket.emit("createOrder", orderData, (response) => {
-            if (response.error) {
-              reject(new Error(response.error));
-            } else {
-              resolve(response);
-            }
-          });
-        });
-
-        if (data && data.message) {
-          toast.success(data.message);
+        socket.on("orderCreated", (data) => {
+          toast.success(data?.message);
           router.push(
-            `/order/complete?orderNumber=${data.saveOrder.orderNumber}`
+            `/order/complete?orderNumber=${data?.saveOrder?.orderNumber}`
           );
-        }
-        Cookies.set("orderComplete", JSON.stringify(true));
+        });
+        Cookies.set("orderComlete", JSON.stringify(true));
       } catch (error) {
         setLoading(false);
-        console.error(error);
+        console.log(error);
       }
     } else {
       return toast.error("Something went wrong");
@@ -145,7 +132,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
               2- Scan the qr code to get the number of your table
             </span>
           </div>
-          <form onSubmit={createOrderFormHandler}>
+          <form onSubmit={createOrderFormHandker}>
             <div className={classes.completeOrderModelFormGroup}>
               <div>
                 {scanResult ? (
