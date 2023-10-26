@@ -76,35 +76,48 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
     setCartProductsValues(totalCartValues);
   }, [cart]);
 
-  const createOrderFormHandker = async (e) => {
+  // create order here function
+  const createOrderFormHandler = async (e) => {
     e.preventDefault();
     if (!scanResult) {
-      return toast.error("Please scan the qr code");
+      return toast.error("Please scan the QR code");
     }
     if (router.query.restaurantId) {
       setLoading(true);
-      socket.emit("createOrder", {
-        restaurantId: router.query.restaurantId,
-        tableNumber: scanResult,
-        notes: notes,
-        totalPrice: cartProductsValues,
-        productIds: productIds,
-        quantatys: quantatys,
-        sizes: sizes,
-        prices: prices,
-        isPaid : true
-      });
       try {
-        socket.on("orderCreated", (data) => {
-          toast.success(data?.message);
-          router.push(
-            `/order/complete?orderNumber=${data?.saveOrder?.orderNumber}`
-          );
+        const orderData = {
+          restaurantId: router.query.restaurantId,
+          tableNumber: scanResult,
+          notes: notes,
+          totalPrice: cartProductsValues,
+          productIds: productIds,
+          quantities: quantities,
+          sizes: sizes,
+          prices: prices,
+          isPaid: true,
+        };
+
+        // Emit the 'createOrder' event and wait for the 'orderCreated' event
+        const data = await new Promise((resolve, reject) => {
+          socket.emit("createOrder", orderData, (response) => {
+            if (response.error) {
+              reject(new Error(response.error));
+            } else {
+              resolve(response);
+            }
+          });
         });
-        Cookies.set("orderComlete", JSON.stringify(true));
+
+        if (data && data.message) {
+          toast.success(data.message);
+          router.push(
+            `/order/complete?orderNumber=${data.saveOrder.orderNumber}`
+          );
+        }
+        Cookies.set("orderComplete", JSON.stringify(true));
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        console.error(error);
       }
     } else {
       return toast.error("Something went wrong");
@@ -132,7 +145,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
               2- Scan the qr code to get the number of your table
             </span>
           </div>
-          <form onSubmit={createOrderFormHandker}>
+          <form onSubmit={createOrderFormHandler}>
             <div className={classes.completeOrderModelFormGroup}>
               <div>
                 {scanResult ? (
