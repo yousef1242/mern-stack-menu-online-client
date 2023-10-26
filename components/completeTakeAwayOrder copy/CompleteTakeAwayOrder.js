@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LoaderAnimation from "../loaderAnimation/LoaderAnimation";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
+import { emptyCartItemsAction } from "@/redux/slices/cartSlice";
 
 const socket = io("https://menuonline.onrender.com");
 
