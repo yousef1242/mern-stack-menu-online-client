@@ -91,7 +91,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
           notes: notes,
           totalPrice: cartProductsValues,
           productIds: productIds,
-          quantities: quantities,
+          quantatys: quantatys,
           sizes: sizes,
           prices: prices,
           isPaid: true,
