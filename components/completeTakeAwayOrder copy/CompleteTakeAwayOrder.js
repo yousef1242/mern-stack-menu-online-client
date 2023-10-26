@@ -3,7 +3,7 @@ import classes from "../../styles/completeHereOrderModel.module.css";
 import { AiOutlineClose } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoaderAnimation from "../loaderAnimation/LoaderAnimation";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
@@ -19,6 +19,7 @@ const CompleteTakeAwayOrderModel = ({ setShowCompleteTakeAwayOrderModel }) => {
   const [sizes, setSizes] = useState([]);
   const [notes, setNotes] = useState("");
   const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const setProductsIds = () => {
@@ -68,7 +69,7 @@ const CompleteTakeAwayOrderModel = ({ setShowCompleteTakeAwayOrderModel }) => {
         quantatys: quantatys,
         sizes: sizes,
         prices: prices,
-        isPaid : false,
+        isPaid: false,
       });
       try {
         socket.on("orderCreated", (data) => {
@@ -78,6 +79,7 @@ const CompleteTakeAwayOrderModel = ({ setShowCompleteTakeAwayOrderModel }) => {
           );
         });
         Cookies.set("orderComlete", JSON.stringify(true));
+        dispatch(emptyCartItemsAction());
       } catch (error) {
         setLoading(false);
         console.log(error);

@@ -57,11 +57,18 @@ export const cartSlice = createSlice({
       // If the item was not found, return the current state
       return state;
     },
+    emptyCartItemsAction: (state) => {
+      return (state.cart = []);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCartAction, updateCartItemAction, deleteCartItemAction } =
-  cartSlice.actions;
+export const {
+  addToCartAction,
+  updateCartItemAction,
+  deleteCartItemAction,
+  emptyCartItemsAction,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

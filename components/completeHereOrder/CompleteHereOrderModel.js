@@ -3,11 +3,12 @@ import classes from "../../styles/completeHereOrderModel.module.css";
 import { AiOutlineClose } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import LoaderAnimation from "../loaderAnimation/LoaderAnimation";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
+import { emptyCartItemsAction } from "@/redux/slices/cartSlice";
 
 const socket = io("https://menuonline.onrender.com");
 
@@ -22,6 +23,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
   const [scanResult, setScanResult] = useState("");
   const { cart } = useSelector((state) => state.cart);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", {
@@ -92,7 +94,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
         quantatys: quantatys,
         sizes: sizes,
         prices: prices,
-        isPaid : true
+        isPaid: true,
       });
       try {
         socket.on("orderCreated", (data) => {
@@ -102,6 +104,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
           );
         });
         Cookies.set("orderComlete", JSON.stringify(true));
+        dispatch(emptyCartItemsAction());
       } catch (error) {
         setLoading(false);
         console.log(error);
