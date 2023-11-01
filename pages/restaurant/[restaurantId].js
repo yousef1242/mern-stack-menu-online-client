@@ -33,6 +33,7 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
   const [showChooseHereOrTakeAwayModel, setShowChooseHereOrTakeAwayModel] =
     useState(false);
   const [cartProductsValues, setCartProductsValues] = useState(0);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { cart } = useSelector((state) => state.cart);
   const numberOptions = [];
@@ -70,13 +71,14 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
             `/api/restaurant/single/${router.query.restaurantId}`
           );
           setRestaurantData(data);
+          setLoading(false)
         } catch (error) {
           console.log(error);
         }
       };
       getSingleRestaurantData();
     }
-  }, [router.query.restaurantId]);
+  }, [router.query.restaurantId, loading]);
 
   useEffect(() => {
     if (router.query.restaurantId) {
@@ -339,7 +341,7 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
       ) : (
         ""
       )}
-      {!restaurantData && <LoaderAnimation />}
+      {loading ? <LoaderAnimation /> : ""}
       {showCompleteHereOrderModel ? (
         <CompleteHereOrderModel
           setShowCompleteHereOrderModel={setShowCompleteHereOrderModel}

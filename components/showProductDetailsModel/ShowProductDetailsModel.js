@@ -1,7 +1,6 @@
 import { AiOutlineClose } from "react-icons/ai";
 import classes from "../../styles/showProductDetailsModel.module.css";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import LoaderAnimation from "../loaderAnimation/LoaderAnimation";
 import { useDispatch } from "react-redux";
@@ -48,8 +47,8 @@ const ShowProductDetailsModel = ({
               {productData?.ingredients}
             </h6>
             <form className="d-flex justify-content-between flex-wrap align-items-center">
-              {productData?.sizes?.map((size) => (
-                <div key={size.size}>
+              {productData?.sizes?.map((size,index) => (
+                <div key={index}>
                   <input
                     type="radio"
                     id={`size-${size?.size}`}

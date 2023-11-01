@@ -77,7 +77,7 @@ const CompleteHereOrderModel = ({ setShowCompleteHereOrderModel }) => {
     }, 0);
     setCartProductsValues(totalCartValues);
   }, [cart]);
-
+  
   const createOrderFormHandker = async (e) => {
     e.preventDefault();
     if (!scanResult) {
