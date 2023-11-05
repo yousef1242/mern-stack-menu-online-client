@@ -46,15 +46,15 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
   // errors
   useEffect(() => {
     if (error) {
-        router.push("/error");
+      router.push("/error");
     }
     if (errorMessage) {
       toast.error(errorMessage);
       setTimeout(() => {
         router.push("/error");
-      }, 2000);
+      }, 4000);
     }
-  }, [errorMessage,error]);
+  }, [errorMessage, error]);
 
   useEffect(() => {
     const totalCartValues = cart?.reduce((total, cartItem) => {
@@ -71,9 +71,12 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
             `/api/restaurant/single/${router.query.restaurantId}`
           );
           setRestaurantData(data);
-          setLoading(false)
+          setLoading(false);
         } catch (error) {
-          console.log(error);
+          router.push("/error");
+          if (error.response.data.message) {
+            console.log(error.response.data.message);
+          }
         }
       };
       getSingleRestaurantData();
@@ -89,7 +92,10 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
           );
           setCategoriesData(data);
         } catch (error) {
-          console.log(error);
+          router.push("/error");
+          if (error.response.data.message) {
+            console.log(error.response.data.message);
+          }
         }
       };
       getRestaurantCategoriesData();
