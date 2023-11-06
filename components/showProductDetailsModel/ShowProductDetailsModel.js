@@ -5,6 +5,7 @@ import { useState } from "react";
 import LoaderAnimation from "../loaderAnimation/LoaderAnimation";
 import { useDispatch } from "react-redux";
 import { addToCartAction } from "@/redux/slices/cartSlice";
+import Image from "next/image";
 
 const ShowProductDetailsModel = ({
   productData,
