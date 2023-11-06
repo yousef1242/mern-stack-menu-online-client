@@ -198,7 +198,7 @@ const SingleRestaurantPage = ({ products, error, errorMessage }) => {
                               width={85}
                               height={85}
                               loading="lazy"
-                              src={product?.image}
+                              src={product?.image?.url}
                               alt=""
                             />
                           </div>
