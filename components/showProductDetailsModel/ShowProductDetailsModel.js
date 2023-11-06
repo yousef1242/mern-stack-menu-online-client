@@ -31,10 +31,11 @@ const ShowProductDetailsModel = ({
               className={productData?.isAvilable ? "" : classes.overlay}
             ></div>
             {productData?.image ? (
-              <img
-                style={{ objectFit: "contain" }}
-                className="img-fluid"
-                src={productData?.image}
+              <Image
+                width={85}
+                height={85}
+                loading="lazy"
+                src={productData?.image?.url}
                 alt=""
               />
             ) : (
@@ -47,7 +48,7 @@ const ShowProductDetailsModel = ({
               {productData?.ingredients}
             </h6>
             <form className="d-flex justify-content-between flex-wrap align-items-center">
-              {productData?.sizes?.map((size,index) => (
+              {productData?.sizes?.map((size, index) => (
                 <div key={index}>
                   <input
                     type="radio"
@@ -82,7 +83,7 @@ const ShowProductDetailsModel = ({
                           quantaty: 1,
                         })
                       );
-                      toast.success("Product has been added to cart")
+                      toast.success("Product has been added to cart");
                     }, 1000);
                   } else {
                     toast.error("Please choose size");

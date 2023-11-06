@@ -47,7 +47,7 @@ const OrderCompletePage = () => {
       </Head>
       <ClientNavbar />
       <div
-        className="d-flex align-items-center justify-content-center py-5"
+        className="d-flex align-items-center justify-content-center py-5 overflow-hidden"
         style={{ minHeight: "100vh" }}
       >
         {!orderIsDone ? (
