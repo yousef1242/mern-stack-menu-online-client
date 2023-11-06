@@ -33,8 +33,8 @@ const ShowProductDetailsModel = ({
             ></div>
             {productData?.image ? (
               <Image
-                width={85}
-                height={85}
+                width={300}
+                height={300}
                 loading="lazy"
                 src={productData?.image?.url}
                 alt=""
